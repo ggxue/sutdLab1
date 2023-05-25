@@ -1,8 +1,6 @@
 import hashlib
 import time
-import logging
 import argparse
-
 
 start_time = time.time()
 
