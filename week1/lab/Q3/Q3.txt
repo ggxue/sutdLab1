@@ -2,12 +2,11 @@
 
 source: 
 
-words5.txt (load as var dic)                            W
+words5.txt (load as var dic)                            D
 
-1007399-hash5.txt  (load as var target)
+1007399-hash5.txt  (load as var target)                 D
 
 // var output = {}
-
 
 // for each t in target
     
