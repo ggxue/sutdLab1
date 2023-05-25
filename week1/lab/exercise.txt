@@ -1,0 +1,29 @@
+Create a Python 3 script called md5_lab1.py, which will find the corresponding input plaintext
+that was used for making the hash values in file <STUDENT_ID>-hash5.txt.
+
+~~~
+
+
+source: 
+
+1007399-hash5.txt 
+
+words5.txt
+
+output.txt
+
+~~~~
+
+bruteforce
+
+dictionary attack(prepared dictionary word , only nede to hash 1 time to match)
+
+rainbow table attack (only need to store start and the end node)
+
+(all about possibility space)
+
+~~~~
+
+Homework:
+
+Code and Report

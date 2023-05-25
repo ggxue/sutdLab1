@@ -1,0 +1,27 @@
+paswd lenght > paswd complexity
+
+~~~~~
+
+( 62^9 * 62^8 * 62^7 ...... 62^2 * 62 / 100 billion * 60 * 60 * 24 ) days
+
+~~~~
+
+bit quality
+
+~~~~
+
+Strength is given in bits, the log2 of the search space
+
+~~~~
+
+pasw manager
+
+~~~~
+
+collision is bad because it give attack an other possibility to attack(another possible password to login)
+
+=====
+
+dictionary 
+brute force attack
+rainbow

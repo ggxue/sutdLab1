@@ -1,0 +1,23 @@
+
+
+source: 
+
+words5.txt (load as var dic)                            W
+
+1007399-hash5.txt  (load as var target)
+
+// var output = {}
+
+
+// for each t in target
+    
+    // for each w in dic
+        // if match
+            // output[w] = t
+            
+
+// mount output to .txt
+
+// clock the time
+
+output.txt (log time base on screenshot format)
