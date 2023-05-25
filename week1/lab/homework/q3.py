@@ -1,23 +1,28 @@
-
-import logging
 import hashlib
+import time
+import logging
+import argparse
 
 
-print('Start')
+start_time = time.time()
 
-words = []
-words = open('./words5.txt').read().splitlines()
-print(words[:10])
+parser = argparse.ArgumentParser(description='Script description')
+parser.add_argument('-i', '--input', type=str, help='Path to the input file', required=True)
+parser.add_argument('-w', '--word', type=str, help='Path to the word file', required=True)
+parser.add_argument('-o', '--output', type=str, help='Path to the output file', required=True)
 
-hashes = []
-hashes = open('./1007399-hash15.txt').read().splitlines()
-print(hashes[:10])
+args = parser.parse_args()
+inputs = open(args.input).read().splitlines()
+words = open(args.word).read().splitlines()
+output = open(args.output, 'w')
 
-output = {}
-
-for h in hashes:
+cracked_count = 0
+for h in inputs:
     for w in words:
         if h == hashlib.md5(w.encode()).hexdigest():
-            print("found")
-            print(h)
-            print(w)
+            output.write('{} : {}\n'.format(w, h))
+            cracked_count += 1
+            
+end_time = time.time()
+            
+output.write('Dictionary attack completed! Cracked {} out of {}, time taken {}s\n'.format(cracked_count, len(inputs), end_time - start_time))

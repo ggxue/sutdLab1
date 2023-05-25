@@ -20,3 +20,6 @@ words5.txt (load as var dic)                            D
 // clock the time
 
 output.txt (log time base on screenshot format)
+
+Final script should support three mandatory arguments:                  W
+-i <INPUT_FILE>, -w <DICTIONARY-_FILE>, and -o <OUTPUT_FILE>
