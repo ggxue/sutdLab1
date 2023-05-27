@@ -21,5 +21,5 @@ words5.txt (load as var dic)                            D
 
 output.txt (log time base on screenshot format)
 
-Final script should support three mandatory arguments:                  W
+Final script should support three mandatory arguments:                  
 -i <INPUT_FILE>, -w <DICTIONARY-_FILE>, and -o <OUTPUT_FILE>
