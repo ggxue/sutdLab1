@@ -1,0 +1,9 @@
+
+
+plain passwd -> rainbow table(dictionary) <- pswd hash
+
+~~
+
+hash cat:
+
+wordlist
