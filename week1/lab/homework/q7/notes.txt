@@ -1,0 +1,1 @@
+hashcat -m 500 -D 2 -o cracked.txt example500.hash example.dict --show
