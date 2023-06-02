@@ -1,0 +1,40 @@
+OM OL XTKB MKOXOAS MG ZKTAQ A 
+LWZLMOMWMOGF EOHITK WLOFU 
+YKTJWTFEB AFASBLOL
+
+---
+
+start both oscent and kali with host-only adapter for homework
+
+// find server:
+nmap -sP 192.168.56.0/24
+
+
+// plain -> key(change everytime) -> cipher
+
+// q5: ceaser question:
+the key is between 0 to 128 (because ceaser cipher just shifting of bits only)
+
+* there is only 1 correct plain text , just the key and cipher text changing everytime
+* so can try to decrypt the first 20 character to reavel the first portion of the plain text
+* readability check
+
+brute force 128 times for each iteration to crack part by part
+lock the readable plain text while decrypting
+decrypt and lock the text from front to end part by part and send to server.
+
+what library to bench mark the readable plain txt? some python natural language library to bench mark
+
+
+// q6: Frequency Analysis of Substitution cipher
+
+1. unhex 
+2. build frequency table
+3. swap in frequency table
+
+* answer text are all lowser case letters with 9 character symbols only
+
+// q7: stream cipher
+
+
+// just write implementation for c , s , o in code then submit the python file for this week homework

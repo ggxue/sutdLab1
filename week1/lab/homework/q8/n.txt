@@ -1,0 +1,10 @@
+
+
+
+// brute force
+
+
+// rainbow crack
+
+// hash cat
+hashcat -m 0 -a 0 q8-hash.txt example.dict

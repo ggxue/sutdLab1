@@ -5,8 +5,10 @@ Speed:
 
 RainbowCrack: RainbowCrack is known for its speed in cracking password hashes. It utilizes precomputed tables called rainbow tables, which are generated in advance to accelerate the cracking process. These tables allow RainbowCrack to quickly match password hashes, resulting in faster cracking speeds for certain types of hashes.
 Hashcat: Hashcat is a highly optimized password cracking tool that supports various cracking techniques, such as brute-force, dictionary attacks, and rule-based attacks. It utilizes the computational power of modern GPUs (Graphics Processing Units) to accelerate the cracking process. With the right hardware setup, Hashcat can achieve impressive speeds for cracking a wide range of password hashes.
+
 Flexibility:
 
 RainbowCrack: RainbowCrack primarily focuses on cracking LM and NTLM hashes, which are commonly used in older Windows operating systems. It excels in cracking these specific types of hashes due to its efficient use of precomputed tables. However, it may not be as versatile when it comes to cracking other types of hashes.
 Hashcat: Hashcat is highly flexible and supports a wide range of hash types, including popular ones like MD5, SHA1, bcrypt, and more. It can handle various hashing algorithms and formats, making it suitable for cracking passwords from different sources and platforms. Additionally, Hashcat offers extensive customization options, allowing users to define specific attack modes, rules, and masks to adapt to different password cracking scenarios.
+
 In summary, RainbowCrack is known for its speed when cracking LM and NTLM hashes using precomputed tables, while Hashcat is a versatile and powerful tool that can handle multiple hash types and provides customization options for different cracking techniques. The choice between the two tools depends on the specific hashes you want to crack and the level of flexibility and customization you require.
