@@ -8,7 +8,9 @@ import requests
 import json
 import hashlib
 import argparse
-import nltk
+import nltk # question 5
+import collections # question 6
+import binascii # question 6
 
 def xorString(s1,s2):
     """ 
@@ -40,12 +42,13 @@ def resolvePlainChallenge():
     r = requests.post(url + 'solutions/plain', headers=headers, data=json.dumps(payload))
     print("[DEBUG] Obtained response: %s" % r.text)
 
-# question 5: caesarChallengeSolution 
+# solution functions:
 def log_p_text_string(index, string, name):
     with open(f'{name} output.txt', 'a', encoding='utf-8') as f:
         log_entry = f"Index: {index}, String: {string}\n"
         f.write(log_entry)
-            
+        
+# question 5:
 def caesarChallengeSolution(c_hex_arr):
     p_text_string = ""
 
@@ -108,8 +111,54 @@ def resolveCaesarChallenge():
     r = requests.post(url+'solutions/caesar', headers=headers,data=json.dumps(payload))
     print("[DEBUG] Obtained response: %s" % r.text)
     
-# question 6: 
+# question 6:
+def substitutionChallengeSolution(s):
+    # Define the frequency distribution of letters in the English language
+    english_frequencies = {
+        'e': 12.02, 't': 9.10, 'a': 8.12, 'o': 7.68, 'i': 7.31, 'n': 6.95, 's': 6.28, 'r': 6.02,
+        'h': 5.92, 'd': 4.32, 'l': 3.98, 'u': 2.88, 'c': 2.71, 'm': 2.61, 'f': 2.30, 'y': 2.11,
+        'w': 2.09, 'g': 2.03, 'p': 1.82, 'b': 1.49, 'v': 1.11, 'k': 0.69, 'x': 0.17, 'q': 0.11,
+        'j': 0.10, 'z': 0.07
+    }
 
+    # Function to calculate the frequency distribution of letters in a given text
+    def calculate_frequencies(text):
+        counter = collections.Counter(text)
+        total = len(text)
+        frequencies = {letter: (count / total) * 100 for letter, count in counter.items()}
+        return frequencies
+
+    # Hex string to be deciphered
+
+    # Convert hex string to ASCII
+    byte_string = binascii.unhexlify(s)
+    try:
+        ascii_text = byte_string.decode('utf-8')
+    except UnicodeDecodeError:
+        # Fallback to Latin-1 encoding
+        ascii_text = byte_string.decode('latin-1')
+
+    # Calculate letter frequencies in the ciphered text
+    ciphered_frequencies = calculate_frequencies(ascii_text.lower())
+
+    # Sort the ciphered frequencies dictionary by values in descending order
+    sorted_ciphered_frequencies = {
+        k: v for k, v in sorted(ciphered_frequencies.items(), key=lambda item: item[1], reverse=True)
+    }
+
+    # Match the most frequent letters in the ciphered text with the corresponding English letter frequencies
+    mapping = {}
+    for ciphered_letter, ciphered_frequency in sorted_ciphered_frequencies.items():
+        english_letter = max(english_frequencies, key=lambda x: english_frequencies[x])
+        mapping[ciphered_letter] = english_letter
+        del english_frequencies[english_letter]
+
+    # Decrypt the ciphered text using the mapping
+    deciphered_text = ''.join(mapping.get(letter, letter) for letter in ascii_text)
+
+    # Print the deciphered text
+    print(deciphered_text)
+    
 def resolvesubstitutionChallenge():
     """
         Solution of substitution challenge
@@ -123,6 +172,7 @@ def resolvesubstitutionChallenge():
 
     # TODO: Add a solution here (conversion from hex to ascii will reveal that the result is in a human readable format)
     s=data['challenge'][2:]
+    s = substitutionChallengeSolution(s)
     s=b.unhexlify(s)
     solution = s
 
@@ -132,6 +182,8 @@ def resolvesubstitutionChallenge():
 
     r = requests.post(url+'solutions/substitution', headers=headers,data=json.dumps(payload))
     print("[DEBUG] Obtained response: %s" % r.text)
+
+# question 7: wip
 
 def resolveotpChallenge():
     """
