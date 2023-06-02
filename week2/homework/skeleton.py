@@ -41,8 +41,8 @@ def resolvePlainChallenge():
     print("[DEBUG] Obtained response: %s" % r.text)
 
 # question 5: caesarChallengeSolution 
-def log_p_text_string(index, string):
-    with open('output.txt', 'a', encoding='utf-8') as f:
+def log_p_text_string(index, string, name):
+    with open(f'{name} output.txt', 'a', encoding='utf-8') as f:
         log_entry = f"Index: {index}, String: {string}\n"
         f.write(log_entry)
             
@@ -71,7 +71,7 @@ def caesarChallengeSolution(c_hex_arr):
             p_text_string += chr((num-i) % ascii_length)
             print("check:")
             print(p_text_string)
-        log_p_text_string(i, p_text_string)
+        log_p_text_string(i, p_text_string, 'caesar')
         if is_valid_english_sentence(p_text_string):
             print("valid")
             print(p_text_string)
@@ -101,10 +101,6 @@ def resolveCaesarChallenge():
     s=data['challenge'][2:]
     s=b.unhexlify(s)
     solution = caesarChallengeSolution(s)
-    print("gg:58")
-    print(solution)
-
-
     payload = { 'cookie' : data['cookie'], 'solution' : solution}
     print("[DEBUG] Submitted solution is:")
     print(json.dumps(payload, indent=4, separators=(',', ': ')))
