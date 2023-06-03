@@ -54,7 +54,6 @@ def caesarChallengeSolution(c_hex_arr):
 
     # step 2: convert each ciphered hex into ciphered decimal
     decimal_array = list(map(lambda x: int(str(x), 16), c_hex_arr))
-    print(decimal_array)
 
     def is_valid_english_sentence(sentence):
         # Tokenize the sentence into words
@@ -69,18 +68,18 @@ def caesarChallengeSolution(c_hex_arr):
 
     ascii_length = 255
     for i in range(1, ascii_length):
-        print(i)
+        # print(i)
         for num in decimal_array:
             p_text_string += chr((num-i) % ascii_length)
-            print("check:")
-            print(p_text_string)
+            # print("check:")
+            # print(p_text_string)
         log_p_text_string(i, p_text_string, 'caesar')
         if is_valid_english_sentence(p_text_string):
-            print("valid")
-            print(p_text_string)
+            # print("valid")
+            # print(p_text_string)
             break
         else:
-            print("invalid")
+            # print("invalid")
             p_text_string = ""
 
     return p_text_string
@@ -128,8 +127,6 @@ def substitutionChallengeSolution(s):
         frequencies = {letter: (count / total) * 100 for letter, count in counter.items()}
         return frequencies
 
-    # Hex string to be deciphered
-
     # Convert hex string to ASCII
     byte_string = binascii.unhexlify(s)
     try:
@@ -156,7 +153,6 @@ def substitutionChallengeSolution(s):
     p_text_string = ''.join(mapping.get(letter, letter) for letter in ascii_text)
 
     # Print the deciphered text
-    print(p_text_string)
     log_p_text_string(1, p_text_string, 'substitution')
     return p_text_string
     
@@ -184,8 +180,43 @@ def resolvesubstitutionChallenge():
     r = requests.post(url+'solutions/substitution', headers=headers,data=json.dumps(payload))
     print("[DEBUG] Obtained response: %s" % r.text)
 
-# question 7: wip
+# question 7:
+def xor_strings(plaintext, hex_string):
+        # Convert hex string to bytes
+        bytes_hex = bytes.fromhex(hex_string)
+        # Convert plaintext to bytes
+        bytes_plain = plaintext.encode()
+        # Perform XOR operation
+        result = bytearray(a ^ b for a, b in zip(bytes_plain, bytes_hex))
+        # Convert result back to binary string
+        xor_result = ''.join(format(byte, '08b') for byte in result)
+        return xor_result
+    
+def binary_to_hex(binary):
+    decimal_value = int(binary, 2)
+    hex_value = hex(decimal_value)[2:]  # Remove the '0x' prefix
+    return hex_value
 
+def resolveotpChallengeSolution(default_c):
+    # 1. calculate key using default plain text and server response cipher text
+    default_p = "Student ID 1000000 gets 0 points"
+    otp = xor_strings(default_p, default_c)
+
+    # 2. get updated cipher text by otp XOR updated plain text
+    updated_p = "Student ID 1007399 gets 6 points"
+    updated_c = xor_strings(updated_p, binary_to_hex(otp))
+
+    return binary_to_hex(updated_c)
+
+# question 7 response:
+# [DEBUG] Submitted solution is:
+# {
+#     "cookie": "0x50ca6ff426d4d686d3af8d8314e95e9d",
+#     "solution": "161d0c56130b17493e214562580056465c506b52140116457f42115d2c0b071b"
+# }
+# [DEBUG] Obtained response: Plaintext of your solution is:
+# "Student ID (1007399) gets (6) points"
+    
 def resolveotpChallenge():
     """
         Solution of otp challenge
@@ -199,7 +230,8 @@ def resolveotpChallenge():
 
     # TODO: Add a solution here (conversion from hex to ascii will reveal that the result is in a human readable format)
     a = data['challenge'][2:]
-    c = b.unhexlify(a)
+    # c = b.unhexlify(a)
+    c = resolveotpChallengeSolution(a)
     solution = c
 
     payload = { 'cookie' : data['cookie'], 'solution' : solution}
@@ -250,13 +282,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
-# --port <port> --ip <ip> --mode = [’p’, ’c’, ’s’, ’o’]).
-
-# trial run -p
-
-# Caesar’s cipher -c
-
-# Frequency Analysis of Substitution Cipher -s
-
-# OTP messages Integrity -o
