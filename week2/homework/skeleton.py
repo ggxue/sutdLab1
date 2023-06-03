@@ -1,25 +1,23 @@
 #!/usr/bin/env python
 # Skeleton for Security Tools Lab 1 - Simple ciphers
-# Student ID:
-# StudentName:
+# Student ID: 1007399
+# StudentName: Xue Haige
 
 import binascii as b
 import requests
 import json
-import hashlib
 import argparse
 import nltk # question 5
 import collections # question 6
 import binascii # question 6
 
-def xorString(s1,s2):
-    """ 
-        XOR two strings with each other, return result as string
-    """
-    rval = [ord(a) ^ ord(b) for a,b in zip(s1,s2)]
-    return ''.join([chr(r) for r in rval])
+def log_p_text_string(index, string, name):
+    with open(f'{name} output.txt', 'a', encoding='utf-8') as f:
+        log_entry = f"Index: {index}, String: {string}\n"
+        f.write(log_entry)
 
-
+# question 5:
+# ----------------------------------------------------------------------------------------------------------------------------------------
 def resolvePlainChallenge():
     """
         Solution of plain challenge
@@ -42,20 +40,7 @@ def resolvePlainChallenge():
     r = requests.post(url + 'solutions/plain', headers=headers, data=json.dumps(payload))
     print("[DEBUG] Obtained response: %s" % r.text)
 
-# solution functions:
-def log_p_text_string(index, string, name):
-    with open(f'{name} output.txt', 'a', encoding='utf-8') as f:
-        log_entry = f"Index: {index}, String: {string}\n"
-        f.write(log_entry)
-        
-# question 5:
-def caesarChallengeSolution(c_hex_arr):
-    p_text_string = ""
-
-    # step 2: convert each ciphered hex into ciphered decimal
-    decimal_array = list(map(lambda x: int(str(x), 16), c_hex_arr))
-
-    def is_valid_english_sentence(sentence):
+def is_valid_english_sentence(sentence):
         # Tokenize the sentence into words
         words = nltk.word_tokenize(sentence)
 
@@ -65,10 +50,15 @@ def caesarChallengeSolution(c_hex_arr):
                 return False
 
         return True
+    
+def caesarChallengeSolution(c_hex_arr):
+    p_text_string = ""
+
+    # step 2: convert each ciphered hex into ciphered decimal
+    decimal_array = list(map(lambda x: int(str(x), 16), c_hex_arr))
 
     ascii_length = 255
     for i in range(1, ascii_length):
-        # print(i)
         for num in decimal_array:
             p_text_string += chr((num-i) % ascii_length)
             # print("check:")
@@ -83,10 +73,6 @@ def caesarChallengeSolution(c_hex_arr):
             p_text_string = ""
 
     return p_text_string
-#
-# question 5 plain text answer:
-# erroneous. when i said that you stimulated me i meant, to be frank, that in noting your fallacies i was occasionally guided towards the truth. not that you are entirely wrong in this instance. the man is certainly a country practitioner. and he walks a good deal." "then i was right." "to that extent." "but that was all."
-# "no, no, my dear watson, not all--by no means all. i would suggest, for example, that a presentation to a doctor is more likely to come from a hospital than from a hunt, and that whe the initials 'c.c.' are placed before that hospital the word 'charing cross' very naturally suggest themselves. "you may be right. "the probability lies in that direction. and if we take this as  working hypothesis we have a fresh basis from which to start ou construction of this unknown visitor." "well, then, supposing that 'c.c.h.' does stand for 'charing cross hospital,' what further inference.
 
 def resolveCaesarChallenge():
     """
@@ -110,7 +96,21 @@ def resolveCaesarChallenge():
     r = requests.post(url+'solutions/caesar', headers=headers,data=json.dumps(payload))
     print("[DEBUG] Obtained response: %s" % r.text)
     
+# question 5 plain text answer:
+# erroneous. when i said that you stimulated me i meant, to be frank, that in noting your fallacies i was occasionally guided towards the truth. not that you are entirely wrong in this instance. the man is certainly a country practitioner. and he walks a good deal." "then i was right." "to that extent." "but that was all."
+# "no, no, my dear watson, not all--by no means all. i would suggest, for example, that a presentation to a doctor is more likely to come from a hospital than from a hunt, and that whe the initials 'c.c.' are placed before that hospital the word 'charing cross' very naturally suggest themselves. "you may be right. "the probability lies in that direction. and if we take this as  working hypothesis we have a fresh basis from which to start ou construction of this unknown visitor." "well, then, supposing that 'c.c.h.' does stand for 'charing cross hospital,' what further inference.
+# ----------------------------------------------------------------------------------------------------------------------------------------
+    
+    
 # question 6:
+# ----------------------------------------------------------------------------------------------------------------------------------------
+# Function to calculate the frequency distribution of letters in a given text
+def calculate_frequencies(text):
+    counter = collections.Counter(text)
+    total = len(text)
+    frequencies = {letter: (count / total) * 100 for letter, count in counter.items()}
+    return frequencies
+
 def substitutionChallengeSolution(s):
     # Define the frequency distribution of letters in the English language
     english_frequencies = {
@@ -119,13 +119,6 @@ def substitutionChallengeSolution(s):
         'w': 2.09, 'g': 2.03, 'p': 1.82, 'b': 1.49, 'v': 1.11, 'k': 0.69, 'x': 0.17, 'q': 0.11,
         'j': 0.10, 'z': 0.07
     }
-
-    # Function to calculate the frequency distribution of letters in a given text
-    def calculate_frequencies(text):
-        counter = collections.Counter(text)
-        total = len(text)
-        frequencies = {letter: (count / total) * 100 for letter, count in counter.items()}
-        return frequencies
 
     # Convert hex string to ASCII
     byte_string = binascii.unhexlify(s)
@@ -179,8 +172,11 @@ def resolvesubstitutionChallenge():
 
     r = requests.post(url+'solutions/substitution', headers=headers,data=json.dumps(payload))
     print("[DEBUG] Obtained response: %s" % r.text)
+# ----------------------------------------------------------------------------------------------------------------------------------------
+
 
 # question 7:
+# ----------------------------------------------------------------------------------------------------------------------------------------
 def xor_strings(plaintext, hex_string):
         # Convert hex string to bytes
         bytes_hex = bytes.fromhex(hex_string)
@@ -207,15 +203,6 @@ def resolveotpChallengeSolution(default_c):
     updated_c = xor_strings(updated_p, binary_to_hex(otp))
 
     return binary_to_hex(updated_c)
-
-# question 7 response:
-# [DEBUG] Submitted solution is:
-# {
-#     "cookie": "0x50ca6ff426d4d686d3af8d8314e95e9d",
-#     "solution": "161d0c56130b17493e214562580056465c506b52140116457f42115d2c0b071b"
-# }
-# [DEBUG] Obtained response: Plaintext of your solution is:
-# "Student ID (1007399) gets (6) points"
     
 def resolveotpChallenge():
     """
@@ -241,7 +228,17 @@ def resolveotpChallenge():
     r = requests.post(url+'solutions/otp', headers=headers,data=json.dumps(payload))
     print("[DEBUG] Obtained response: %s" % r.text)
 
-def parseArgs():               
+# question 7 response:
+# [DEBUG] Submitted solution is:
+# {
+#     "cookie": "0x50ca6ff426d4d686d3af8d8314e95e9d",
+#     "solution": "161d0c56130b17493e214562580056465c506b52140116457f42115d2c0b071b"
+# }
+# [DEBUG] Obtained response: Plaintext of your solution is:
+# "Student ID (1007399) gets (6) points"
+# ----------------------------------------------------------------------------------------------------------------------------------------
+
+def parseArgs():
     """ 
         Function for arguments parsing
     """
@@ -255,7 +252,6 @@ def parseArgs():
     args = aparser.parse_args()
     
     return args
-
 
 def main():
     args = parseArgs()
