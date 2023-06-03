@@ -148,16 +148,17 @@ def substitutionChallengeSolution(s):
 
     # Match the most frequent letters in the ciphered text with the corresponding English letter frequencies
     mapping = {}
-    for ciphered_letter, ciphered_frequency in sorted_ciphered_frequencies.items():
+    for ciphered_letter in sorted_ciphered_frequencies.items():
         english_letter = max(english_frequencies, key=lambda x: english_frequencies[x])
         mapping[ciphered_letter] = english_letter
-        del english_frequencies[english_letter]
 
     # Decrypt the ciphered text using the mapping
-    deciphered_text = ''.join(mapping.get(letter, letter) for letter in ascii_text)
+    p_text_string = ''.join(mapping.get(letter, letter) for letter in ascii_text)
 
     # Print the deciphered text
-    print(deciphered_text)
+    print(p_text_string)
+    log_p_text_string(1, p_text_string, 'substitution')
+    return p_text_string
     
 def resolvesubstitutionChallenge():
     """
