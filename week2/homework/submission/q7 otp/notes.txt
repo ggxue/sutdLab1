@@ -1,0 +1,25 @@
+
+
+OTP messages Integrity 
+ 
+Extend the python script by option -o to call /challenges/otp. 
+
+You will obtain a ciphertext encrypted with the One Time Pad (OTP) cipher, 
+and your task is to modify pertaining ciphertext as described below:
+ 
+
+Try simply submitting the ciphertext to the API (/solutions/otp), 
+
+you should see corresponding plaintext message. 
+
+
+Implement a solution that manipulates the ciphertext in order to change the plaintext message returned in the response of the API call. In particular, you must change the student ID to your own student ID, and the points wished to 6. 
+
+~~~~
+
+
+1. calculate key using default plain text and server response cipher text
+
+2. use key to encrypt updated plain text
+
+3. send updated cipher text to server

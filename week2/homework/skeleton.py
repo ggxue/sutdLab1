@@ -42,10 +42,10 @@ def resolvePlainChallenge():
     print("[DEBUG] Obtained response: %s" % r.text)
 
 def is_valid_english_sentence(sentence):
-        # Tokenize the sentence into words
+        # tokenize the sentence into words
         words = nltk.word_tokenize(sentence)
 
-        # Check if all words are valid English words
+        # check if all words are valid English words
         for word in words:
             if not nltk.corpus.words.words().__contains__(word.lower()):
                 return False
@@ -55,7 +55,7 @@ def is_valid_english_sentence(sentence):
 def caesarChallengeSolution(c_hex_arr):
     p_text_string = ""
 
-    # step 2: convert each ciphered hex into ciphered decimal
+    # convert each ciphered hex into ciphered decimal
     decimal_array = list(map(lambda x: int(str(x), 16), c_hex_arr))
 
     ascii_length = 255
@@ -113,7 +113,7 @@ def calculate_frequencies(text):
     return frequencies
 
 def substitutionChallengeSolution(s):
-    # Define the frequency distribution of letters in the English language
+    # define the frequency distribution of letters in the English language
     english_frequencies = {
         'e': 12.02, 't': 9.10, 'a': 8.12, 'o': 7.68, 'i': 7.31, 'n': 6.95, 's': 6.28, 'r': 6.02,
         'h': 5.92, 'd': 4.32, 'l': 3.98, 'u': 2.88, 'c': 2.71, 'm': 2.61, 'f': 2.30, 'y': 2.11,
@@ -121,32 +121,32 @@ def substitutionChallengeSolution(s):
         'j': 0.10, 'z': 0.07
     }
 
-    # Convert hex string to ASCII
+    # convert hex string to ASCII
     byte_string = binascii.unhexlify(s)
     try:
         ascii_text = byte_string.decode('utf-8')
     except UnicodeDecodeError:
-        # Fallback to Latin-1 encoding
+        # fallback to Latin-1 encoding
         ascii_text = byte_string.decode('latin-1')
 
-    # Calculate letter frequencies in the ciphered text
+    # calculate letter frequencies in the ciphered text
     ciphered_frequencies = calculate_frequencies(ascii_text.lower())
 
-    # Sort the ciphered frequencies dictionary by values in descending order
+    # sort the ciphered frequencies dictionary by values in descending order
     sorted_ciphered_frequencies = {
         k: v for k, v in sorted(ciphered_frequencies.items(), key=lambda item: item[1], reverse=True)
     }
 
-    # Match the most frequent letters in the ciphered text with the corresponding English letter frequencies
+    # match the most frequent letters in the ciphered text with the corresponding English letter frequencies
     mapping = {}
     for ciphered_letter in sorted_ciphered_frequencies.items():
         english_letter = max(english_frequencies, key=lambda x: english_frequencies[x])
         mapping[ciphered_letter] = english_letter
 
-    # Decrypt the ciphered text using the mapping
+    # decrypt the ciphered text using the mapping
     p_text_string = ''.join(mapping.get(letter, letter) for letter in ascii_text)
 
-    # Print the deciphered text
+    # print the deciphered text
     log_p_text_string(1, p_text_string, 'substitution')
     return p_text_string
     
@@ -178,19 +178,19 @@ def resolvesubstitutionChallenge():
 # question 7:
 # ----------------------------------------------------------------------------------------------------------------------------------------
 def xor_strings(plaintext, hex_string):
-        # Convert hex string to bytes
+        # convert hex string to bytes
         bytes_hex = bytes.fromhex(hex_string)
-        # Convert plaintext to bytes
+        # convert plaintext to bytes
         bytes_plain = plaintext.encode()
         # Perform XOR operation
         result = bytearray(a ^ b for a, b in zip(bytes_plain, bytes_hex))
-        # Convert result back to binary string
+        # convert result back to binary string
         xor_result = ''.join(format(byte, '08b') for byte in result)
         return xor_result
     
 def binary_to_hex(binary):
     decimal_value = int(binary, 2)
-    hex_value = hex(decimal_value)[2:]  # Remove the '0x' prefix
+    hex_value = hex(decimal_value)[2:]  # remove the '0x' prefix
     return hex_value
 
 def resolveotpChallengeSolution(default_c):
@@ -213,7 +213,7 @@ def resolveotpChallenge():
 
     r = requests.get(url + 'challenges/otp')
     data = r.json()
-    #print ("[DEBUG] Obtained challenge ciphertext: %s with len %d" % (data['challenge'], len(data['challenge'])))
+    # print ("[DEBUG] Obtained challenge ciphertext: %s with len %d" % (data['challenge'], len(data['challenge'])))
 
     # TODO: Add a solution here (conversion from hex to ascii will reveal that the result is in a human readable format)
     a = data['challenge'][2:]
