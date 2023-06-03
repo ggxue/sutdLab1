@@ -7,6 +7,7 @@ import binascii as b
 import requests
 import json
 import argparse
+import socket # IPs/Ports validation:
 import nltk # question 5
 import collections # question 6
 import binascii # question 6
@@ -104,7 +105,7 @@ def resolveCaesarChallenge():
     
 # question 6:
 # ----------------------------------------------------------------------------------------------------------------------------------------
-# Function to calculate the frequency distribution of letters in a given text
+# function to calculate the frequency distribution of letters in a given text
 def calculate_frequencies(text):
     counter = collections.Counter(text)
     total = len(text)
@@ -163,7 +164,6 @@ def resolvesubstitutionChallenge():
     # TODO: Add a solution here (conversion from hex to ascii will reveal that the result is in a human readable format)
     s=data['challenge'][2:]
     s = substitutionChallengeSolution(s)
-    s=b.unhexlify(s)
     solution = s
 
     payload = { 'cookie' : data['cookie'], 'solution' : solution}
@@ -238,6 +238,19 @@ def resolveotpChallenge():
 # "Student ID (1007399) gets (6) points"
 # ----------------------------------------------------------------------------------------------------------------------------------------
 
+
+# main function:
+# ----------------------------------------------------------------------------------------------------------------------------------------
+def validate_ip(ip):
+    try:
+        socket.inet_aton(ip)
+        return True
+    except socket.error:
+        return False
+
+def validate_port(port):
+    return 0 <= int(port) <= 65535
+
 def parseArgs():
     """ 
         Function for arguments parsing
@@ -266,6 +279,16 @@ def main():
     print(IP)
     print("check PORT:")
     print(PORT)
+    
+    # IPs/Ports validation:
+    #----------------------------------
+    if IP and not validate_ip(IP):
+        print("Invalid IP address")
+        return
+    if PORT and not validate_port(PORT):
+        print("Invalid port number")
+        return
+    #-----------------------------------
 
     if args.mode == "o":
         resolveotpChallenge()
@@ -278,3 +301,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+# ----------------------------------------------------------------------------------------------------------------------------------------
