@@ -251,6 +251,7 @@ def validate_ip(ip):
 def validate_port(port):
     return 0 <= int(port) <= 65535
 
+# mandatory parameters --port and --ip:
 def parseArgs():
     """ 
         Function for arguments parsing
